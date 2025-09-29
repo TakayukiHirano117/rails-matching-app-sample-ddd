@@ -3,19 +3,19 @@ skinparam packageStyle rectangle
 
 package "User 集約" {
   object User {
-    +Id
-    +Name (<=50 chars)
-    +Email (unique, valid format)
-    +Password (>=8 chars, hashed)
-    +ProfileId (参照)
+    +ユーザーID
+    +名前
+    +メールアドレス
+    +パスワード
+    +プロフィールID
   }
 
   object Profile {
-    +Id
-    +UserId (参照)
-    +SelfIntroduction (<=500 chars)
-    +Photo (JPEG/PNG, <=5MB)
-    +Hobbies (each <=30 chars)
+    +プロフィールID
+    +ユーザーID
+    +自己紹介
+    +顔写真
+    +趣味
   }
 
   User "1" -- "1" Profile
@@ -23,78 +23,96 @@ package "User 集約" {
 
 package "Like 集約" {
   object Like {
-    +Id
-    +FromUserId
-    +ToUserId
-    +CreatedAt
-    --
-    Constraint:
-    - One like per target
-    - FromUserId != ToUserId
+    +いいねID
+    +送信者ユーザーID
+    +受信者ユーザーID
+    +作成日時
   }
 }
 
 package "Match 集約" {
   object Match {
-    +Id
-    +UserId1
-    +UserId2
-    +CreatedAt
-    --
-    Constraint:
-    - Unique pair of users
-    - Created only on mutual like
-    --
-    Business Rules:
-    - Match作成時にLike関係の相互確認が必要
-    - 一度作成されたMatchは削除不可（不変）
+    +マッチID
+    +ユーザーID1
+    +ユーザーID2
+    +作成日時
   }
 }
 
 package "Message 集約" {
   object Message {
-    +Id
-    +MatchId (参照)
-    +SenderId
-    +ReceiverId
-    +Content (<=1000 chars)
-    +SentAt
-    --
-    Constraint:
-    - MatchIdは有効なMatchを参照する必要がある
-    - Sender/ReceiverはMatchの参加者である必要がある
-    - Sender != Receiver
-    - Content is not empty
-    --
-    Business Rules:
-    - メッセージ送信前にMatch存在確認が必要
-    - 送信者がMatchの参加者であることを確認
+    +メッセージID
+    +マッチID
+    +送信者ID
+    +受信者ID
+    +メッセージ内容
+    +送信日時
   }
 
   object Conversation {
-    +Id
-    +MatchId (参照)
-    +LastMessageAt
-    +MessageCount
-    --
-    Constraint:
-    - MatchIdは有効なMatchを参照する必要がある
-    --
-    Business Rules:
-    - Matchごとに1つのConversationが存在
-    - メッセージ送信時に統計情報を更新
+    +会話ID
+    +マッチID
+    +最終メッセージ日時
+    +メッセージ数
   }
 
   Conversation "1" -- "*" Message
 }
 
 ' 集約間の関係（DDDの原則に従い、直接的な関連は避ける）
-User "1" --> "*" Like : sends
-User "1" --> "*" Match : participates
+User "1" --> "*" Like : いいね送信
+User "1" --> "*" Match : マッチ参加
 
 ' Message集約はMatchIdを通じてMatch集約を参照（弱い関連）
-Message ..> Match : references via MatchId
-Conversation ..> Match : references via MatchId
+Message ..> Match : マッチIDで参照
+Conversation ..> Match : マッチIDで参照
+
+' バリデーションルール（validation-rules.mdより）
+note right of User
+  名前: 1文字以上50文字以内
+  メールアドレス: メールアドレス形式
+  パスワード: 8文字以上英数字のみ
+  かつ英数字それぞれ1文字以上
+end note
+
+note right of Profile
+  自己紹介: 1000文字以内
+  顔写真: 1枚のみ
+end note
+
+note right of Like
+  制約:
+  - 1つのターゲットに1つのいいね
+  - 送信者と受信者は異なる
+end note
+
+note right of Match
+  制約:
+  - ユーザーペアの一意性
+  - 相互いいねでのみ作成
+  ビジネスルール:
+  - Match作成時にLike関係の相互確認が必要
+  - 一度作成されたMatchは削除不可（不変）
+end note
+
+note right of Message
+  制約:
+  - MatchIDは有効なMatchを参照
+  - 送信者/受信者はMatchの参加者
+  - 送信者と受信者は異なる
+  - メッセージ内容は空でない
+  ビジネスルール:
+  - メッセージ送信前にMatch存在確認
+  - 送信者がMatchの参加者であることを確認
+end note
+
+note right of Conversation
+  制約:
+  - MatchIDは有効なMatchを参照
+  ビジネスルール:
+  - Matchごとに1つのConversationが存在
+  - メッセージ送信時に統計情報を更新
+end note
 
 ' 注意: 集約間の関係は参照による疎結合を保つ
 ' 実装時はRepository経由でのアクセスを想定
