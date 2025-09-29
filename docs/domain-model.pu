@@ -1,0 +1,101 @@
+@startuml model
+skinparam packageStyle rectangle
+
+package "User 集約" {
+  object User {
+    +Id
+    +Name (<=50 chars)
+    +Email (unique, valid format)
+    +Password (>=8 chars, hashed)
+    +ProfileId (参照)
+  }
+
+  object Profile {
+    +Id
+    +UserId (参照)
+    +SelfIntroduction (<=500 chars)
+    +Photo (JPEG/PNG, <=5MB)
+    +Hobbies (each <=30 chars)
+  }
+
+  User "1" -- "1" Profile
+}
+
+package "Like 集約" {
+  object Like {
+    +Id
+    +FromUserId
+    +ToUserId
+    +CreatedAt
+    --
+    Constraint:
+    - One like per target
+    - FromUserId != ToUserId
+  }
+}
+
+package "Match 集約" {
+  object Match {
+    +Id
+    +UserId1
+    +UserId2
+    +CreatedAt
+    --
+    Constraint:
+    - Unique pair of users
+    - Created only on mutual like
+    --
+    Business Rules:
+    - Match作成時にLike関係の相互確認が必要
+    - 一度作成されたMatchは削除不可（不変）
+  }
+}
+
+package "Message 集約" {
+  object Message {
+    +Id
+    +MatchId (参照)
+    +SenderId
+    +ReceiverId
+    +Content (<=1000 chars)
+    +SentAt
+    --
+    Constraint:
+    - MatchIdは有効なMatchを参照する必要がある
+    - Sender/ReceiverはMatchの参加者である必要がある
+    - Sender != Receiver
+    - Content is not empty
+    --
+    Business Rules:
+    - メッセージ送信前にMatch存在確認が必要
+    - 送信者がMatchの参加者であることを確認
+  }
+
+  object Conversation {
+    +Id
+    +MatchId (参照)
+    +LastMessageAt
+    +MessageCount
+    --
+    Constraint:
+    - MatchIdは有効なMatchを参照する必要がある
+    --
+    Business Rules:
+    - Matchごとに1つのConversationが存在
+    - メッセージ送信時に統計情報を更新
+  }
+
+  Conversation "1" -- "*" Message
+}
+
+' 集約間の関係（DDDの原則に従い、直接的な関連は避ける）
+User "1" --> "*" Like : sends
+User "1" --> "*" Match : participates
+
+' Message集約はMatchIdを通じてMatch集約を参照（弱い関連）
+Message ..> Match : references via MatchId
+Conversation ..> Match : references via MatchId
+
+' 注意: 集約間の関係は参照による疎結合を保つ
+' 実装時はRepository経由でのアクセスを想定
+@enduml

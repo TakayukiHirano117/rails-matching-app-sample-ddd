@@ -1,0 +1,32 @@
+@startuml system-relation
+left to right direction
+
+actor 男性 as Male
+rectangle "マッチングアプリ" as App {
+}
+actor 女性 as Female
+
+Male <--> App : 恋人を探す
+App <--> Female : 恋人を探す
+
+Male <..> Female : マッチング・交際
+
+note right of Male : 目的：恋人を見つける
+note left of Female : 目的：恋人を見つける
+
+note bottom of App
+  マッチングアプリが
+  男性と女性を結びつける
+end note
+
+note top of Male
+  アプリを通じて
+  理想の女性と出会う
+end note
+
+note top of Female
+  アプリを通じて
+  理想の男性と出会う
+end note
+
+@enduml
