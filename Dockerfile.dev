@@ -19,6 +19,9 @@ RUN bundle install
 # Rails アプリ全体をコピー
 COPY . .
 
+# Rails binstubsを生成
+RUN bundle exec rails app:update:bin
+
 # エントリポイントスクリプトをコピー
 COPY ./entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
@@ -28,5 +31,5 @@ ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 # ポート 3000 を開放
 EXPOSE 3000
 
-# Rails サーバーを起動
-CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+# Rails サーバーを起動（bundle execを使用）
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "3000"]

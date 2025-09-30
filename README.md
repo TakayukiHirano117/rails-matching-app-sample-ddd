@@ -9,3 +9,9 @@
 
 ## 起動コマンド
 docker compose -f docker-compose.dev.yml up
+
+## テストコマンド
+docker compose -e RAILS_ENV=test exec web bundle exec rspec
+
+## Rubocop
+docker compose -e RAILS_ENV=development exec web bundle exec rubocop -a
