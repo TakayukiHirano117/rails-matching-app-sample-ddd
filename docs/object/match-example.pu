@@ -1,0 +1,76 @@
+@startuml match-example
+skinparam objectStyle class
+
+' Match集約の具体例
+object "太郎と花子のマッチ : Match" as match1 {
+  マッチID = "match_001"
+  ユーザーID1 = "user_001"
+  ユーザーID2 = "user_002"
+  作成日時 = "2025-09-29 16:45:00"
+}
+
+' 関連するLike（参照表示）
+object "太郎→花子いいね : Like" as like1 {
+  いいねID = "like_001"
+  送信者ユーザーID = "user_001"
+  受信者ユーザーID = "user_002"
+  作成日時 = "2025-09-29 14:30:00"
+}
+
+object "花子→太郎いいね : Like" as like2 {
+  いいねID = "like_002"
+  送信者ユーザーID = "user_002"
+  受信者ユーザーID = "user_001"
+  作成日時 = "2025-09-29 16:45:00"
+}
+
+' 参加ユーザー（簡略表示）
+object "田中太郎 : User" as user1 {
+  ユーザーID = "user_001"
+  名前 = "田中太郎"
+}
+
+object "佐藤花子 : User" as user2 {
+  ユーザーID = "user_002"
+  名前 = "佐藤花子"
+}
+
+' 関係性の表現
+match1 ..> user1 : 参加者1
+match1 ..> user2 : 参加者2
+match1 ..> like1 : 成立要因1
+match1 ..> like2 : 成立要因2
+
+note top of match1
+  マッチ成立の瞬間：
+  
+  16:45:00 - 花子がいいねを送信
+  16:45:00 - システムが相互いいねを検知
+  16:45:00 - Matchオブジェクト自動生成
+  
+  この瞬間から両者のメッセージ交換が可能になる
+end note
+
+note right of match1
+  Match集約のビジネスルール：
+  
+  1. 作成条件：
+     - 相互いいねの存在確認が必須
+     - ユーザーペアの一意性保証
+  
+  2. 不変性：
+     - 一度作成されたら削除不可
+     - データの改ざん不可
+  
+  3. 状態管理：
+     - マッチ成立 = メッセージ交換開始可能
+end note
+
+note bottom
+  マッチ成立後の流れ：
+  1. 両ユーザーにマッチ通知送信
+  2. メッセージ交換画面が利用可能に
+  3. Conversationオブジェクトの初期化準備
+end note
+
+@enduml

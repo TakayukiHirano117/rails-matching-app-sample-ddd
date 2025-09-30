@@ -1,0 +1,103 @@
+@startuml message-example
+skinparam objectStyle class
+
+' Message集約の具体例
+object "太郎から花子へのメッセージ : Message" as message1 {
+  メッセージID = "msg_001"
+  マッチID = "match_001"
+  送信者ID = "user_001"
+  受信者ID = "user_002"
+  メッセージ内容 = "マッチしてくれてありがとうございます！よろしくお願いします。"
+  送信日時 = "2025-09-29 17:00:00"
+}
+
+object "花子から太郎へのメッセージ : Message" as message2 {
+  メッセージID = "msg_002"
+  マッチID = "match_001"
+  送信者ID = "user_002"
+  受信者ID = "user_001"
+  メッセージ内容 = "こちらこそよろしくお願いします！プロフィールを見て、映画好きということで興味を持ちました。"
+  送信日時 = "2025-09-29 17:15:00"
+}
+
+object "太郎から花子へのメッセージ2 : Message" as message3 {
+  メッセージID = "msg_003"
+  マッチID = "match_001"
+  送信者ID = "user_001"
+  受信者ID = "user_002"
+  メッセージ内容 = "映画がお好きなんですね！最近何か面白い作品をご覧になりましたか？"
+  送信日時 = "2025-09-29 17:30:00"
+}
+
+object "太郎と花子の会話 : Conversation" as conversation1 {
+  会話ID = "conv_001"
+  マッチID = "match_001"
+  最終メッセージ日時 = "2025-09-29 17:30:00"
+  メッセージ数 = 3
+}
+
+' 関連するMatch（参照表示）
+object "太郎と花子のマッチ : Match" as match1 {
+  マッチID = "match_001"
+  ユーザーID1 = "user_001"
+  ユーザーID2 = "user_002"
+  作成日時 = "2025-09-29 16:45:00"
+}
+
+' オブジェクト間の関係
+conversation1 -- message1 : 管理
+conversation1 -- message2 : 管理
+conversation1 -- message3 : 管理
+
+message1 ..> match1 : 所属マッチ
+message2 ..> match1 : 所属マッチ
+message3 ..> match1 : 所属マッチ
+conversation1 ..> match1 : 対応マッチ
+
+note top of message1
+  最初のメッセージ（17:00）：
+  
+  マッチ成立から15分後
+  太郎が緊張しながらも
+  丁寧な挨拶メッセージを送信
+  
+  「第一印象を大切にしよう」
+  という気持ちが表れている
+end note
+
+note top of message2
+  返事のメッセージ（17:15）：
+  
+  花子が太郎のメッセージに好印象
+  共通の話題（映画）を見つけて
+  会話を発展させようとしている
+  
+  「この人となら話が弾みそう」
+end note
+
+note bottom of conversation1
+  Conversation集約の役割：
+  
+  1. メッセージの統計管理
+     - メッセージ数のカウント
+     - 最終メッセージ時刻の更新
+  
+  2. 会話の状態管理
+     - アクティブ/非アクティブ
+     - 既読/未読状態
+  
+  3. パフォーマンス最適化
+     - メッセージ一覧取得の高速化
+end note
+
+note right of message3
+  会話の発展（17:30）：
+  
+  太郎が花子の興味に応じて
+  具体的な質問を投げかけ
+  会話を深めようとしている
+  
+  「共通の話題で盛り上がりたい」
+end note
+
+@enduml

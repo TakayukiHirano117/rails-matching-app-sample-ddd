@@ -1,0 +1,71 @@
+@startuml user-example
+skinparam objectStyle class
+
+' User集約の具体例
+object "田中太郎 : User" as user1 {
+  ユーザーID = "user_001"
+  名前 = "田中太郎"
+  メールアドレス = "tanaka@example.com"
+  パスワード = "********"
+  プロフィールID = "profile_001"
+}
+
+object "田中太郎のプロフィール : Profile" as profile1 {
+  プロフィールID = "profile_001"
+  ユーザーID = "user_001"
+  自己紹介 = "はじめまして！映画鑑賞と読書が趣味です。一緒に楽しい時間を過ごせる方と出会えたらと思います。"
+  顔写真 = "user_001_photo.jpg"
+  趣味 = ["映画鑑賞", "読書", "カフェ巡り"]
+}
+
+object "佐藤花子 : User" as user2 {
+  ユーザーID = "user_002"
+  名前 = "佐藤花子"
+  メールアドレス = "sato@example.com"
+  パスワード = "********"
+  プロフィールID = "profile_002"
+}
+
+object "佐藤花子のプロフィール : Profile" as profile2 {
+  プロフィールID = "profile_002"
+  ユーザーID = "user_002"
+  自己紹介 = "アウトドアが大好きです！一緒に山登りやキャンプを楽しめる方と出会いたいです。"
+  顔写真 = "user_002_photo.jpg"
+  趣味 = ["登山", "キャンプ", "料理"]
+}
+
+' オブジェクト間の関係
+user1 -- profile1 : 所有
+user2 -- profile2 : 所有
+
+note top of user1
+  具体例：田中太郎
+  - 28歳男性エンジニア
+  - 趣味は映画鑑賞と読書
+  - 真面目で誠実な性格
+  - インドア派
+end note
+
+note top of user2
+  具体例：佐藤花子
+  - 26歳女性看護師
+  - アウトドア派
+  - 明るく活発な性格
+  - スポーツ好き
+end note
+
+note bottom of profile1
+  プロフィールの特徴：
+  - 文化的な趣味をアピール
+  - 落ち着いた印象
+  - 真面目な出会いを求めている
+end note
+
+note bottom of profile2
+  プロフィールの特徴：
+  - アクティブな趣味をアピール
+  - エネルギッシュな印象
+  - 一緒に活動できる相手を求めている
+end note
+
+@enduml

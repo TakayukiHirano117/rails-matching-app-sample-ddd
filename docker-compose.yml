@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: myapp_development
+    networks:
+      - internal
+
+  web:
+    build: .
+    command: bash -c "bin/rails db:prepare && rails server -b 0.0.0.0 -p 3000"
+    volumes:
+      - .:/app
+    ports:
+      - "127.0.0.1:3000:3000" # localhost 経由のみアクセス可能
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://postgres:password@db:5432/myapp_development
+    networks:
+      - internal
+
+volumes:
+  db_data:
+
+networks:
+  internal:
+    driver: bridge
