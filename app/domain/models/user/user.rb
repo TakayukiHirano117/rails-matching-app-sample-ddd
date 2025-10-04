@@ -52,7 +52,7 @@ class User
       name, 
       email, 
       password, 
-      profile_id
+      profile_id: SecureRandom.uuid
     )
   end
 end
