@@ -25,3 +25,8 @@ Started GET "/icon.png" for 172.19.0.1 at 2025-09-30 12:49:01 +0000
   
 ActionController::RoutingError (No route matches [GET] "/icon.png"):
   
+Started GET "/sample" for 172.19.0.1 at 2025-10-04 03:41:33 +0000
+Processing by SampleController#index as */*
+Completed 200 OK in 1ms (Views: 0.7ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+

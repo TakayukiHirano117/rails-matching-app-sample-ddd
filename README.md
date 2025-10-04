@@ -15,3 +15,4 @@ docker compose -e RAILS_ENV=test exec web bundle exec rspec
 
 ## Rubocop
 docker compose -e RAILS_ENV=development exec web bundle exec rubocop -a
+

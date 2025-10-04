@@ -19,6 +19,18 @@ package "User 集約" {
   }
 
   User "1" -- "1" Profile
+  
+  note left of Profile
+    自己紹介: 1000文字以内
+    顔写真: 1枚のみ
+  end note
+  
+  note left of User
+    名前: 1文字以上50文字以内
+    メールアドレス: メールアドレス形式
+    パスワード: 8文字以上英数字のみ
+    かつ英数字それぞれ1文字以上
+  end note
 }
 
 package "Like 集約" {
@@ -28,6 +40,12 @@ package "Like 集約" {
     +受信者ユーザーID
     +作成日時
   }
+  
+  note left of Like
+    制約:
+    - 1つのターゲットに1つのいいね
+    - 送信者と受信者は異なる
+  end note
 }
 
 package "Match 集約" {
@@ -37,6 +55,15 @@ package "Match 集約" {
     +ユーザーID2
     +作成日時
   }
+  
+  note right of Match
+    制約:
+    - ユーザーペアの一意性
+    - 相互いいねでのみ作成
+    ビジネスルール:
+    - Match作成時にLike関係の相互確認が必要
+    - 一度作成されたMatchは削除不可（不変）
+  end note
 }
 
 package "Message 集約" {
@@ -57,6 +84,25 @@ package "Message 集約" {
   }
 
   Conversation "1" -- "*" Message
+  
+  note right of Message
+    制約:
+    - MatchIDは有効なMatchを参照
+    - 送信者/受信者はMatchの参加者
+    - 送信者と受信者は異なる
+    - メッセージ内容は空でない
+    ビジネスルール:
+    - メッセージ送信前にMatch存在確認
+    - 送信者がMatchの参加者であることを確認
+  end note
+  
+  note right of Conversation
+    制約:
+    - MatchIDは有効なMatchを参照
+    ビジネスルール:
+    - Matchごとに1つのConversationが存在
+    - メッセージ送信時に統計情報を更新
+  end note
 }
 
 ' 集約間の関係（DDDの原則に従い、直接的な関連は避ける）
@@ -68,51 +114,6 @@ Message ..> Match : マッチIDで参照
 Conversation ..> Match : マッチIDで参照
 
 ' バリデーションルール（validation-rules.mdより）
-note right of User
-  名前: 1文字以上50文字以内
-  メールアドレス: メールアドレス形式
-  パスワード: 8文字以上英数字のみ
-  かつ英数字それぞれ1文字以上
-end note
-
-note right of Profile
-  自己紹介: 1000文字以内
-  顔写真: 1枚のみ
-end note
-
-note right of Like
-  制約:
-  - 1つのターゲットに1つのいいね
-  - 送信者と受信者は異なる
-end note
-
-note right of Match
-  制約:
-  - ユーザーペアの一意性
-  - 相互いいねでのみ作成
-  ビジネスルール:
-  - Match作成時にLike関係の相互確認が必要
-  - 一度作成されたMatchは削除不可（不変）
-end note
-
-note right of Message
-  制約:
-  - MatchIDは有効なMatchを参照
-  - 送信者/受信者はMatchの参加者
-  - 送信者と受信者は異なる
-  - メッセージ内容は空でない
-  ビジネスルール:
-  - メッセージ送信前にMatch存在確認
-  - 送信者がMatchの参加者であることを確認
-end note
-
-note right of Conversation
-  制約:
-  - MatchIDは有効なMatchを参照
-  ビジネスルール:
-  - Matchごとに1つのConversationが存在
-  - メッセージ送信時に統計情報を更新
-end note
 
 ' 注意: 集約間の関係は参照による疎結合を保つ
 ' 実装時はRepository経由でのアクセスを想定

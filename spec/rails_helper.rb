@@ -68,7 +68,10 @@ RSpec.configure do |config|
   # Database Cleaner configuration
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
+    # Skip clean_with for remote databases
+    unless ENV['DATABASE_URL']&.match?(/^postgres:\/\/.*@(?!localhost|127\.0\.0\.1)/)
+      DatabaseCleaner.clean_with(:truncation, except: %w[ar_internal_metadata])
+    end
   end
 
   config.around(:each) do |example|
