@@ -65,3 +65,6 @@ paginate: true
 - **ドメイン層以外の実装について**
 - **テストについて**
 
+---
+
+![](imgs/ddd-approach.png)
