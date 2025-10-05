@@ -7,7 +7,7 @@ Sequel.migration do
       column :id, :uuid, primary_key: true, default: Sequel.function(:gen_random_uuid)
       column :name, String, null: false, size: 100
       column :email, String, null: false, size: 255
-      column :password_digest, String, null: false
+      column :password, String, null: false
       column :created_at, DateTime, null: false, default: Sequel::CURRENT_TIMESTAMP
       column :updated_at, DateTime, null: false, default: Sequel::CURRENT_TIMESTAMP
       

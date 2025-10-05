@@ -2,7 +2,7 @@
 require 'sequel'
 
 # データベース接続設定
-database_url = ENV.fetch('DATABASE_URL', 'postgres://postgres:password@db:5432/myapp_development')
+database_url = ENV.fetch('DATABASE_URL', 'postgres://postgres:password@db:5432/development')
 
 # Sequelデータベース接続を作成
 DB = Sequel.connect(database_url)

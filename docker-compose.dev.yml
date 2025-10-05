@@ -9,7 +9,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: myapp_development
+      POSTGRES_DB: development
     networks:
       - internal
 
@@ -25,7 +25,7 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgres://postgres:password@db:5432/myapp_development
+      DATABASE_URL: postgres://postgres:password@db:5432/development
       RAILS_ENV: development
     networks:
       - internal

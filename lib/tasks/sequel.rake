@@ -7,6 +7,7 @@ namespace :sequel do
   desc "Run Sequel migrations"
   task :migrate => :environment do
     require_relative '../../config/database_sequel'
+    require 'sequel/extensions/migration'
     
     migration_dir = Rails.root.join('db', 'sequel_migrations')
     
@@ -22,6 +23,7 @@ namespace :sequel do
   desc "Rollback Sequel migrations"
   task :rollback => :environment do
     require_relative '../../config/database_sequel'
+    require 'sequel/extensions/migration'
     
     migration_dir = Rails.root.join('db', 'sequel_migrations')
     version = ENV['VERSION']&.to_i
