@@ -12,6 +12,6 @@ class Uuid
     return nil, "UUIDは36文字で入力してください" if value.length != 36
     return nil, "UUIDの形式が正しくありません" unless value.match?(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/)
 
-    super(value:), nil
+    super(value:)
   end
 end

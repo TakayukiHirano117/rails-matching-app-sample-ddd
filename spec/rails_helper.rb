@@ -10,6 +10,7 @@ require 'rspec/rails'
 require 'factory_bot_rails'
 require 'faker'
 require 'database_cleaner/active_record'
+require 'shoulda-matchers'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -32,7 +33,7 @@ end
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = Rails.root.join('spec/fixtures')
+  config.fixture_paths = Rails.root.join('spec/fixtures')
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -75,6 +76,13 @@ RSpec.configure do |config|
   end
 
   config.around(:each) do |example|
+    # Docker環境でのDatabaseCleanerセーフガードを無効化
+    # 本番環境では使用しないこと - セキュリティリスクがあります
+    # この設定はテスト環境のDockerコンテナ内でのみ使用されます
+    if ENV['DATABASE_URL']&.match?(/@(?:db|host\.docker\.internal):/) && Rails.env.test?
+      DatabaseCleaner.allow_remote_database_url = true
+    end
+    
     DatabaseCleaner.cleaning do
       example.run
     end

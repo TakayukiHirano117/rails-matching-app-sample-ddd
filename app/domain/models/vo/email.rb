@@ -12,7 +12,7 @@ class Email
     return nil, "メールアドレスは255文字以内で入力してください" if value.length > 255
     return nil, "メールアドレスの形式が正しくありません" unless valid_email_format?(value)
 
-    super(value:), nil
+    super(value:)
   end
 
   private

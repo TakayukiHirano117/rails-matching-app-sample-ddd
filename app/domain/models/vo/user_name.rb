@@ -11,6 +11,6 @@ class UserName
     return nil, "名前は必須です" if value.blank?
     return nil, "名前は50文字以内で入力してください" if value.length > 50
 
-    super(value:), nil
+    super(value:)
   end
 end
