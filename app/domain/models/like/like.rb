@@ -19,13 +19,13 @@ class Like
     receiver_user_id:,
   )
     like_id, err = Uuid.new(like_id)
-    return err unless err.nil?
+    return nil, err unless err.nil?
 
     sender_user_id, err = Uuid.new(sender_user_id)
-    return err unless err.nil?
+    return nil, err unless err.nil?
 
     receiver_user_id, err = Uuid.new(receiver_user_id)
-    return err unless err.nil?
+    return nil, err unless err.nil?
 
     super(like_id:, sender_user_id:, receiver_user_id:)
   end

@@ -22,16 +22,16 @@ class Message
     message_content:,
   )
     message_id, err = Uuid.new(message_id)
-    return err unless err.nil?
+    return nil, err unless err.nil?
 
     sender_user_id, err = Uuid.new(sender_user_id)
-    return err unless err.nil?
+    return nil, err unless err.nil?
 
     receiver_user_id, err = Uuid.new(receiver_user_id)
-    return err unless err.nil?
+    return nil, err unless err.nil?
 
     message_content, err = MessageContent.new(message_content)
-    return err unless err.nil?
+    return nil, err unless err.nil?
 
     super(message_id:, sender_user_id:, receiver_user_id:, message_content:)
   end

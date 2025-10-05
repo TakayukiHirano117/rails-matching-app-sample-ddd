@@ -7,7 +7,7 @@ class UserName
     @value = value
   end
 
-  def self.new(value)
+  def self.new(value:)
     return nil, "名前は必須です" if value.blank?
     return nil, "名前は50文字以内で入力してください" if value.length > 50
 

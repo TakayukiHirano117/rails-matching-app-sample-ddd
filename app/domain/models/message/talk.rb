@@ -16,10 +16,10 @@ class Talk
     match_id:,
   )
     talk_id, err = Uuid.new(talk_id)
-    return err unless err.nil?
+    return nil, err unless err.nil?
 
     match_id, err = Uuid.new(match_id)
-    return err unless err.nil?
+    return nil, err unless err.nil?
 
     super(talk_id:, match_id:)
   end

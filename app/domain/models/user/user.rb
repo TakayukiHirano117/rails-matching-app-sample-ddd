@@ -29,19 +29,19 @@ class User
     profile_id:
   )
     user_id, err = Uuid.new(user_id)
-    return err unless err.nil?
+    return nil, err unless err.nil?
 
     name, err = UserName.new(name)
-    return err unless err.nil?
+    return nil, err unless err.nil?
 
     email, err = Email.new(email)
-    return err unless err.nil?
+    return nil, err unless err.nil?
 
     password, err = Password.new(password)
-    return err unless err.nil?
+    return nil, err unless err.nil?
 
     profile_id, err = Uuid.new(profile_id)
-    return err unless err.nil?
+    return nil, err unless err.nil?
 
     super(user_id:, name:, email:, password:, profile_id:)
   end

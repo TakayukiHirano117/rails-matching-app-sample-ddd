@@ -7,7 +7,7 @@ class MessageContent
     @value = value
   end
 
-  def self.new(value)
+  def self.new(value:)
     return nil, "メッセージ内容は必須です" if value.blank?
     return nil, "メッセージ内容は1文字以上1000文字以内で入力してください" if value.length > 1000
 
