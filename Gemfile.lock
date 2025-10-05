@@ -282,6 +282,8 @@ GEM
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
+    sequel (5.97.0)
+      bigdecimal
     shoulda-matchers (6.5.0)
       activesupport (>= 5.2.0)
     simplecov (0.22.0)
@@ -351,6 +353,7 @@ DEPENDENCIES
   rails (~> 8.0.3)
   rspec-rails (~> 7.1)
   rubocop-rails-omakase
+  sequel (~> 5.84)
   shoulda-matchers (~> 6.4)
   simplecov
   solid_cable
