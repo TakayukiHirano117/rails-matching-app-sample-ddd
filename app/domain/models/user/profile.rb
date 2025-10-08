@@ -45,7 +45,7 @@ class Profile
     introduction:,
     image_path:
   )
-    profile_id = SecureRandom.uuid
+    profile_id = SecureRandom.uuid,
     user_id:,
     introduction:,
     image_path:
