@@ -40,14 +40,14 @@ docker compose -f docker-compose.dev.yml exec web bundle exec rake sequel:versio
 ```
 
 ## テストコマンド
-docker compose -e RAILS_ENV=test exec web bundle exec rspec
+docker compose  exec -e RAILS_ENV=test web bundle exec rspec
 
 ### テスト環境でのDatabaseCleaner設定について
 
 **⚠️ 重要な注意事項**
 
 このプロジェクトでは、Docker環境でのテスト実行時にDatabaseCleanerのセーフガード機能を無効化しています。
-これは開発・テスト環境でのみ使用される設定であり、**本番環境では絶対に使用しないでください**。
+これは開発・テスト環境でのみ使用される設定であり、**本番環境では絶対に使用しないでください**docker compose  exec -e RAILS_ENV=test web bundle exec rspec。
 
 #### 現在の設定内容
 
