@@ -20,6 +20,6 @@ class UserController < ApplicationController
     # バリデーション
     
     # ユースケースの呼び出し
-    user_usecase.like_user(user_id:, like_user_id:)
+    user_usecase.like_user(sender_user_id:, receiver_user_id:)
   end
 end
