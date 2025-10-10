@@ -13,6 +13,7 @@ class UserController < ApplicationController
     # レスポンスの記載
   end
 
+  # いいね用コントローラーメソッド
   def like_user
     sender_user_id = params[:sender_user_id]
     receiver_user_id = params[:receiver_user_id]

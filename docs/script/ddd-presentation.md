@@ -449,12 +449,10 @@ app/
 - https://little-hands.hatenablog.com/entry/2022/06/01/ddd-modeling
 
 
-
 ---
 
 ## GitHub リポジトリ
 https://github.com/TakayukiHirano117/rails-matching-app-sample-ddd
-
 
 ---
 
