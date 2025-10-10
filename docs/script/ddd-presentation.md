@@ -257,6 +257,30 @@ DDDでは
 - setterは用意せず、特別なミューテーションメソッドを用意
 
 ---
+## 完全コンストラクタパターンを用いない例
+
+```ruby
+class User
+  attr_accessor :name, :email, :age
+  
+  def initialize
+    # 引数なしで初期化、不完全な状態
+  end
+end
+
+# 不完全な状態でインスタンス化
+user = User.new
+
+# 後からsetterで値を設定（外部から自由に変更可能）
+user.name = "田中太郎"
+user.email = "tanaka@example.com"
+user.age = 25
+
+# 外部から自由に値を変更できてしまう
+user.age = -100  # 不正な値も入ってしまう
+```
+
+---
 
 ## エンティティとは
 
@@ -296,10 +320,20 @@ ActiveRecordのファイルが保存されている既存のmodelsディレク�
 
 ---
 
-## 参考資料・引用元
+## 参考資料・引用元・など
 - https://www.domainlanguage.com/ddd/
 - https://little-hands.hatenablog.com/entry/2018/12/10/ddd-architecture
 - https://little-hands.hatenablog.com/entry/2018/10/08/goal-of-ddd
 - https://little-hands.hatenablog.com/entry/2022/06/01/ddd-modeling
 
+
+
 ---
+
+## GitHub リポジトリ
+https://github.com/TakayukiHirano117/rails-matching-app-sample-ddd
+
+
+---
+
+# ご清聴ありがとうございました！
