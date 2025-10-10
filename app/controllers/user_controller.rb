@@ -12,4 +12,14 @@ class UserController < ApplicationController
 
     # レスポンスの記載
   end
+
+  def like_user
+    sender_user_id = params[:sender_user_id]
+    receiver_user_id = params[:receiver_user_id]
+
+    # バリデーション
+    
+    # ユースケースの呼び出し
+    user_usecase.like_user(user_id:, like_user_id:)
+  end
 end
