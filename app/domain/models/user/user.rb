@@ -7,6 +7,9 @@ require './app/domain/models/vo/password.rb'
 class User
   attr_reader :user_id, :name, :email, :password, :profile_id
 
+
+  # DBの値で再構築・新規作成
+  # いずれのメソッドも最終的にinitializeを通る。
   def initialize(
     user_id:,
     name:,
@@ -21,6 +24,8 @@ class User
     @profile_id = profile_id
   end
 
+  # DBから取得したデータをドメインモデルに変換する
+  # ファクトリーメソッドの役割
   def self.new(
     user_id:,
     name:,
@@ -58,5 +63,23 @@ class User
       password:, 
       profile_id: SecureRandom.uuid
     )
+  end
+
+  # プロフィール更新用メソッド
+  # これが書かれていることで「ユーザーはプロフィールを更新できるんだな」ということが分かる
+  # コードのドキュメント化が促進される
+  def update_profile(
+    introduction:,
+    image_path:
+  )
+    profile, err = Profile.create(
+      user_id: @user_id,
+      profile_id: @profile_id,
+      introduction:,
+      image_path:
+    )
+    return nil, err unless err.nil?
+
+    return profile
   end
 end
