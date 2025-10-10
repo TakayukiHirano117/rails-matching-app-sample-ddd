@@ -62,7 +62,7 @@ package "Match 集約" {
   end note
 }
 
-package "Message 集約" {
+package "Talk 集約" {
   object Message {
     +メッセージID
     +送信者ユーザーID
